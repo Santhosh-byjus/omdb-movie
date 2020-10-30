@@ -1,33 +1,42 @@
-const express= require('express');
+const express = require('express');
 const cors = require('cors');
-const bodyParser= require('body-parser');
+const { isEmpty } = require('lodash');
+const bodyParser = require('body-parser');
+const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
-const MongoClient = require('mongodb').MongoClient
 
-const app=express()
-app.use(cors())
-const port=5000;
+
+const app = express()
+const port = 5000;
 
 const uri = process.env.MONGODB_URI;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const connectDatabase = async (req,res,next) => {
-  const client = await MongoClient.connect(uri);
-  const db = client.db("imdb")
-  const collection = db.collection("movies");
-  app.locals.collection=collection;
-//   global.nativeClient =client;
-//   return "Database connected"
-//   next()
-//   const db = client.db("imdb")
-//   const collection = db.collection("movies");
-//   console.log("ccc");
+const connectDatabase = async (req, res, next) => {
+    try {
+        const client = await MongoClient.connect(uri);
+
+        if (isEmpty(client)) {
+            return res.send("Database not connected");
+        }
+        global.nativeClient = client;
+        console.log("Database Connected");
+        next();
+    }
+    catch (error) {
+        return res.send("Database not connected");
+    }
 }
-connectDatabase();
-app.get('/',(req,res)=>{
-    const collection=req.app.locals.collection;
-    collection.find({}).toArray().then(response=>console.log(response));
-    res.send("dd");
+
+app.use(cors());
+app.use(connectDatabase);
+
+app.get('/:searchValue', async (req, res) => {
+    const { searchValue } = req.params;
+    const moviesCollection = nativeClient.db("imdb").collection("movies");
+    const moviesData = await moviesCollection.find({ title: searchValue }).toArray();
+    return res.send(moviesData);
 })
-app.listen(port,()=>{console.log("connected to server");})
+
+app.listen(port, () => { console.log("connected to server"); })

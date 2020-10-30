@@ -35,11 +35,12 @@ export default function App() {
   }
 
   function fetchMovies() {
-    fetch(`http://localhost:5000`)
+    fetch(`http://localhost:5000/${searchValue}`)
       .then((response) => response.json())
       .then((result) => setData(result))
       .then((error) => console.log("error: ", error));
   }
+
 
   return (
     <Container style={{ marginTop: "60px" }}>
@@ -51,21 +52,21 @@ export default function App() {
       <br />
       <section className="movies-section">
         <Row>
-          {data.Search &&
-            data.Search.map((movie) => {
+          {data && data.length > 0 &&
+            data.map((movie) => {
               return (
                 <Col md={4} key={movie.imdbID}>
                   <Card>
                     <CardImg
                       top
                       width="100%"
-                      src={movie.Poster}
+                      src={movie.poster}
                       alt="Card image cap"
                     />
                     <CardBody>
-                      <CardTitle>{movie.Title}</CardTitle>
+                      <CardTitle>{movie.title}</CardTitle>
                       <CardText>
-                        {movie.Year}-{movie.Type}
+                        {movie.year}
                       </CardText>
 
                       <Link
