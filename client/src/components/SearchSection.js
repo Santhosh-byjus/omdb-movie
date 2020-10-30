@@ -6,14 +6,16 @@ export default function SearchSection(props) {
 
   return (
     <section className="search-section">
+      <br></br>
+      <p>or</p>
+      <h4>Search for a movie :</h4>
       <InputGroup>
         <Input
-          placeholder="Type to search for movies..."
+          placeholder=" Search movie name..."
           onChange={onChangeSearchValue}
           onKeyPress={onKeyPressSearchValue}
         />
-
-        <Button color="primary" onClick={onClickSearch}>
+        <Button color="success" onClick={onClickSearch}>
           Search
         </Button>
       </InputGroup>

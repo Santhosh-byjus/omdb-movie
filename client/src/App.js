@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Card,
@@ -10,17 +11,15 @@ import {
   Col,
   Button
 } from "reactstrap";
-
-import { BrowserRouter as Link } from "react-router-dom";
-
 import SearchSection from "./components/SearchSection";
 
 export default function App() {
   const [data, setData] = useState({});
-  const [searchValue, setSearchValue] = useState({});
+  const [searchValue, setSearchValue] = useState("");
 
   function onChangeSearchValue(event) {
     const searchValue = event.target.value;
+
     setSearchValue(searchValue);
   }
 
@@ -35,15 +34,19 @@ export default function App() {
   }
 
   function fetchMovies() {
-    fetch(`http://localhost:5000/${searchValue}`)
+    fetch(`http://localhost:5000/getMovies/${searchValue}`)
       .then((response) => response.json())
       .then((result) => setData(result))
-      .then((error) => console.log("error: ", error));
+      .catch((error) => console.log("error", error));
   }
-
 
   return (
     <Container style={{ marginTop: "60px" }}>
+      <Link
+        to={`/add-movie/`}
+        className="btn btn-primary"
+      >Add a movie</Link>
+      <br></br>
       <SearchSection
         onChangeSearchValue={onChangeSearchValue}
         onKeyPressSearchValue={onKeyPressSearchValue}
@@ -52,10 +55,10 @@ export default function App() {
       <br />
       <section className="movies-section">
         <Row>
-          {data && data.length > 0 &&
+          {data && data.length &&
             data.map((movie) => {
               return (
-                <Col md={4} key={movie.imdbID}>
+                <Col md={3} key={movie.imdbID}>
                   <Card>
                     <CardImg
                       top
@@ -68,13 +71,11 @@ export default function App() {
                       <CardText>
                         {movie.year}
                       </CardText>
-
                       <Link
-                        to={`/movieInfo/${movie.imdbID}`}
-                        className="btn-text"
-                        variant="secondary"
+                        to={`/booking-page/${movie.imdbId}`}
+                        className="btn btn-primary"
                       >
-                        <Button>Show More</Button>
+                        Show more
                       </Link>
                     </CardBody>
                   </Card>
