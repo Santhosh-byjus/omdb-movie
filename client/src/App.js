@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Container,
@@ -17,6 +17,11 @@ export default function App() {
   const [data, setData] = useState({});
   const [searchValue, setSearchValue] = useState("");
 
+  useEffect(()=>{
+    onClickSearch()
+  },[])
+
+
   function onChangeSearchValue(event) {
     const searchValue = event.target.value;
 
@@ -34,7 +39,7 @@ export default function App() {
   }
 
   function fetchMovies() {
-    fetch(`http://localhost:5000/getMovies/${searchValue}`)
+    fetch(`http://localhost:5000/getMovies?searchValue=${searchValue}`)
       .then((response) => response.json())
       .then((result) => setData(result))
       .catch((error) => console.log("error", error));

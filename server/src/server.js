@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 
 const routes = require("./routes");
 
-const port = 5000;
+const port = process.env.PORT;
 const url = process.env.MONGODB_URI;
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });

@@ -4,9 +4,10 @@ const Movie = require("./models/Movie");
 const router = express.Router();
 
 module.exports = function(){
-    router.get('/getMovies/:searchValue', async (req, res) => {
-        const { searchValue } = req.params;
-        const moviesData = await Movie.find({title:searchValue});
+    router.get('/getMovies', async (req, res) => {
+        const { searchValue } = req.query;
+        const query = searchValue?{title:searchValue}:{};
+        const moviesData = await Movie.find(query);
         console.log(moviesData);
         return res.send(moviesData);
     });
