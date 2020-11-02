@@ -14,7 +14,7 @@ export default function AddMovie() {
     }
 
     const callAddMovieApi = async () => {
-        const result = await axios.post("http://localhost:5000/addMovie", formValues).then((response) => {
+        const result = await axios.post("https://polar-earth-91126.herokuapp.com/addMovie", formValues).then((response) => {
             alert("Movie added succesfully");
             const { data } = result.data;
             response.send(data);

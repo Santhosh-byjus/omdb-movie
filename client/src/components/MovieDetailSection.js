@@ -22,7 +22,7 @@ export default function MovieDetailSection() {
 
   function getMovieDetail() {
     setLoading(true);
-    fetch(`http://localhost:5000/getMovieById/${movieId}`)
+    fetch(`https://polar-earth-91126.herokuapp.com/getMovieById/${movieId}`)
       .then((response) => response.json())
       .then((result) => {
         const [movieDetail] = result;

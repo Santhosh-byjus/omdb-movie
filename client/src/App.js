@@ -39,7 +39,7 @@ export default function App() {
   }
 
   function fetchMovies() {
-    fetch(`http://localhost:5000/getMovies?searchValue=${searchValue}`)
+    fetch(`https://polar-earth-91126.herokuapp.com/getMovies?searchValue=${searchValue}`)
       .then((response) => response.json())
       .then((result) => setData(result))
       .catch((error) => console.log("error", error));
